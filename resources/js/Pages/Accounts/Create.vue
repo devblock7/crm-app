@@ -12,7 +12,7 @@
                         </ul>
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
-                        <form>
+                        <form @submit.prevent="submitForm">
                             <div class="grid grid-cols-6 gap-6">
                                 <div class="col-span-6 sm:col-span-3">
                                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -20,6 +20,7 @@
                                         type="text"
                                         id="name"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.name"
                                     >
                                 </div>
 
@@ -28,8 +29,9 @@
                                     <select
                                         id="owner"
                                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        v-model="form.owner.name"
                                     >
-                                        <option></option>
+                                        <option>{{ form.owner.name }}</option>
                                     </select>
                                 </div>
 
@@ -39,6 +41,7 @@
                                         type="tel"
                                         id="phone"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.phone"
                                     >
                                 </div>
 
@@ -48,6 +51,7 @@
                                         type="text"
                                         id="country"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.country"
                                     >
                                 </div>
 
@@ -57,6 +61,7 @@
                                         type="text"
                                         id="address"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.address"
                                     >
                                 </div>
 
@@ -66,6 +71,7 @@
                                         type="text"
                                         id="city"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.town_city"
                                     >
                                 </div>
 
@@ -75,6 +81,7 @@
                                         type="text"
                                         id="post-code"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.post_code"
                                     >
                                 </div>
                             </div>
@@ -92,7 +99,23 @@
 
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
-import {InertiaLink, Head} from '@inertiajs/inertia-vue3'
+import {InertiaLink, Head, useForm} from '@inertiajs/inertia-vue3'
 
-const form = '' // placeholder value
+const props = defineProps({
+    user: Object,
+});
+const form = useForm({
+  name: null,
+  owner: props.user,
+  phone: null,
+  country: null,
+  address: null,
+  town_city: null,
+  post_code: null,
+  errors: null,
+});
+
+function submitForm() {
+    form.post('/accounts/', form)
+};
 </script>

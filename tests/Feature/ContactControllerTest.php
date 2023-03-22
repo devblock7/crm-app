@@ -129,7 +129,7 @@ class ContactControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->post(route('contacts.store'), [
-            'account_id' => $this->account->id,
+            'account' => $this->account->id,
             'first_name' => 'First',
             'last_name' => 'Last',
             'email' => 'first@last.com',
@@ -155,14 +155,28 @@ class ContactControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $this->put(route('contacts.update', $this->contact->id), [
-            'email' => 'test@test.com'
+            'email' => 'test@test.com',
+            'first_name' => 'First',
+            'last_name' => 'Last',
+            'email' => 'first@last.com',
+            'phone' => '0123456789',
+            'position' => 'Test position',
+            'account' => 1
+
+
         ])
             ->assertRedirect()
             ->assertSessionDoesntHaveErrors();
 
         $this->assertDatabaseHas('contacts', [
             'id' => $this->contact->id,
-            'email' => 'test@test.com'
+            'email' => 'test@test.com',
+            'first_name' => 'First',
+            'last_name' => 'Last',
+            'email' => 'first@last.com',
+            'phone' => '0123456789',
+            'position' => 'Test position',
+            'account_id' => 1
         ]);
     }
 }

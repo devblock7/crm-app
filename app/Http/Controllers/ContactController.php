@@ -37,10 +37,11 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        $contact->load('account');
+        $account = Account::where('id', $contact->account_id)->first();
 
         return Inertia::render('Contacts/Show', [
             'contact' => $contact,
+            'account' => $account,
             ]);
     }
 

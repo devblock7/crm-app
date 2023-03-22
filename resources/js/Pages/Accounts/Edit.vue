@@ -12,7 +12,7 @@
                         </ul>
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
-                        <form>
+                        <form @submit.prevent="submitForm">
                             <div class="grid grid-cols-6 gap-6">
                                 <div class="col-span-6 sm:col-span-3">
                                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -20,6 +20,7 @@
                                         type="text"
                                         id="name"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.name"
                                     >
                                 </div>
 
@@ -28,8 +29,9 @@
                                     <select
                                         id="owner"
                                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        v-model="form.owner"
                                     >
-                                        <option></option>
+                                        <option>{{ form.owner }}</option>
                                     </select>
                                 </div>
 
@@ -39,6 +41,7 @@
                                         type="tel"
                                         id="phone"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.phone"
                                     >
                                 </div>
 
@@ -48,6 +51,7 @@
                                         type="text"
                                         id="country"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.country"
                                     >
                                 </div>
 
@@ -57,6 +61,7 @@
                                         type="text"
                                         id="address"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.address"
                                     >
                                 </div>
 
@@ -66,6 +71,7 @@
                                         type="text"
                                         id="city"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.town_city"
                                     >
                                 </div>
 
@@ -75,12 +81,14 @@
                                         type="text"
                                         id="post-code"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        v-model="form.post_code"
                                     >
                                 </div>
                             </div>
                             <div class="flex justify-between mt-6">
-                                <button
+                                <button 
                                     type="button"
+                                    @click="deleteAccount"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                 >
                                     Delete
@@ -100,7 +108,27 @@
 
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
-import {InertiaLink, Head} from '@inertiajs/inertia-vue3'
+import {InertiaLink, Head, useForm} from '@inertiajs/inertia-vue3'
 
-const form = '' // placeholder value
+const props = defineProps({
+    account: Object,
+    user: Object,
+});
+const form = useForm({
+  name: props.account.name,
+  owner: props.user,
+  phone: props.account.phone,
+  country: props.account.country,
+  address: props.account.address,
+  town_city: props.account.town_city,
+  post_code: props.account.post_code,
+  errors: null,
+});
+
+function submitForm() {
+    form.put('/accounts/' + props.account.id, form)
+};
+function deleteAccount() {
+    form.delete('/accounts/' + props.account.id)
+};
 </script>

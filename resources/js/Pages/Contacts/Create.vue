@@ -92,7 +92,6 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import {InertiaLink, Head, useForm} from '@inertiajs/inertia-vue3'
 
 const props = defineProps({
-    contact: Object,
     accounts: Array,
 });
 const form = useForm({
